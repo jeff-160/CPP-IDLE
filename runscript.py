@@ -37,7 +37,7 @@ import subprocess
 import os
 def log(message):
     with open("log.txt", "w") as f:
-        f.write(f"{os.getcwd()}\n{message}")
+        f.write(f"{message}")
 
     subprocess.run(["cmd", "/c", "start log.txt"])
 
