@@ -1,5 +1,6 @@
-## Introduction
 <p align="center"><img src="images/1.png" width=600 /></p>
+
+## Introduction
 
 This project contains modified IDLE source code that removes all Python functionality and converts it into a C++ IDE.
 
@@ -34,3 +35,5 @@ The Python shell is completely disabled, and is solely for console outputs from 
 
 ### C++ Documentation
 <p align="center"><img src="images/4.png" width=300 /></p>
+
+The documentation button redirects you to https://en.cppreference.com now.
