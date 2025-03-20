@@ -137,18 +137,26 @@ class ScriptBinding:
         
         try:
             self.shell = self.flist.open_shell()
+
+            o_dir = os.getcwd()
+            os.chdir(os.path.dirname(filename))
      
-            front = os.path.join(os.path.dirname(filename), os.path.splitext(os.path.basename(filename))[0])
+            basefile = os.path.basename(filename)
+            front = os.path.splitext(basefile)[0]
+            
+            linker_flags = ""
             
             if os.path.exists("linker_flags.txt"):
                 with open("linker_flags.txt", "r") as f:
                     linker_flags = " ".join(map(lambda x: x.strip(), f.read().split("\n")))
 
             with open("run.bat", "w") as f:
-                f.write(f'@echo off && g++ "{filename}" -o "{front}" {linker_flags} && "{front}"')
+                f.write(f'@echo off && g++ "{basefile}" {linker_flags} -o "{front}" && "{front}"')
 
             result = subprocess.run(["run.bat"], capture_output=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW)
+
             os.remove("run.bat")
+            os.chdir(o_dir)
 
             console = self.shell.interp.tkconsole
             console.resetoutput()

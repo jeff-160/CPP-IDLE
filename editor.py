@@ -442,7 +442,7 @@ class EditorWindow:
             with open(lf_path, "w") as f:
                 f.write("")
 
-        subprocess.run(["notepad", lf_path])
+        subprocess.Popen(["notepad", lf_path])
 
     def createmenubar(self):
         mbar = self.menubar
