@@ -139,9 +139,13 @@ class ScriptBinding:
             self.shell = self.flist.open_shell()
      
             front = os.path.join(os.path.dirname(filename), os.path.splitext(os.path.basename(filename))[0])
+            
+            if os.path.exists("linker_flags.txt"):
+                with open("linker_flags.txt", "r") as f:
+                    linker_flags = " ".join(map(lambda x: x.strip(), f.read().split("\n")))
 
             with open("run.bat", "w") as f:
-                f.write(f'@echo off && g++ "{filename}" -o "{front}" && "{front}"')
+                f.write(f'@echo off && g++ "{filename}" -o "{front}" {linker_flags} && "{front}"')
 
             result = subprocess.run(["run.bat"], capture_output=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW)
             os.remove("run.bat")

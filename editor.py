@@ -30,6 +30,15 @@ from idlelib.tree import wheel_event
 from idlelib.util import py_extensions
 from idlelib import window
 
+# for debugging purposes
+import subprocess
+import os
+def log(message):
+    with open("log.txt", "w") as f:
+        f.write(f"{message}")
+
+    subprocess.run(["cmd", "/c", "start log.txt"])
+
 # The default tab setting for a Text widget, in average-width characters.
 TK_TABWIDTH_DEFAULT = 8
 _py_version = ' (%s)' % platform.python_version()
@@ -416,8 +425,24 @@ class EditorWindow:
         ("options", "_Options"),
         ("window", "_Window"),
         ("help", "_Help"),
+        ("linker_flags", "Linker Flags")
     ]
 
+
+    def linker_flags_menu_postcommand(self):
+        if not self.io.filename:
+            from idlelib.runscript import ScriptBinding
+
+            scriptbinding = ScriptBinding(self)
+            scriptbinding.getfilename()
+            
+        lf_path = os.path.join(os.path.dirname(self.io.filename), "linker_flags.txt")
+        
+        if not os.path.exists(lf_path):
+            with open(lf_path, "w") as f:
+                f.write("")
+
+        subprocess.run(["notepad", lf_path])
 
     def createmenubar(self):
         mbar = self.menubar
