@@ -30,15 +30,6 @@ from idlelib.tree import wheel_event
 from idlelib.util import py_extensions
 from idlelib import window
 
-# for debugging purposes
-import subprocess
-import os
-def log(message):
-    with open("log.txt", "w") as f:
-        f.write(f"{message}")
-
-    subprocess.run(["cmd", "/c", "start log.txt"])
-
 # The default tab setting for a Text widget, in average-width characters.
 TK_TABWIDTH_DEFAULT = 8
 _py_version = ' (%s)' % platform.python_version()
@@ -311,6 +302,7 @@ class EditorWindow:
         text.bind("<<run-module>>", scriptbinding.run_module_event)
         text.bind("<<run-custom>>", scriptbinding.run_custom_event)
         text.bind("<<do-rstrip>>", self.Rstrip(self).do_rstrip)
+        text.bind("<<linker-flags>>", scriptbinding.linker_flags_event)
         self.ctip = ctip = self.Calltip(self)
         text.bind("<<try-open-calltip>>", ctip.try_open_calltip_event)
         #refresh-calltip must come after paren-closed to work right
@@ -424,25 +416,9 @@ class EditorWindow:
         ("run", "_Run"),
         ("options", "_Options"),
         ("window", "_Window"),
-        ("help", "_Help"),
-        ("linker_flags", "Linker Flags")
+        ("help", "_Help")
     ]
-
-
-    def linker_flags_menu_postcommand(self):
-        if not self.io.filename:
-            from idlelib.runscript import ScriptBinding
-
-            scriptbinding = ScriptBinding(self)
-            scriptbinding.getfilename()
-            
-        lf_path = os.path.join(os.path.dirname(self.io.filename), "linker_flags.txt")
-        
-        if not os.path.exists(lf_path):
-            with open(lf_path, "w") as f:
-                f.write("")
-
-        subprocess.Popen(["notepad", lf_path])
+    
 
     def createmenubar(self):
         mbar = self.menubar

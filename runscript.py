@@ -53,6 +53,17 @@ class ScriptBinding:
         self.cli_args = []
         self.perf = 0.0    # Workaround for macOS 11 Uni2; see bpo-42508.
 
+    def linker_flags_event(self, event):
+        filename = self.editwin.io.filename or self.getfilename()
+            
+        lf_path = os.path.join(os.path.dirname(filename), "linker_flags.txt")
+        
+        if not os.path.exists(lf_path):
+            with open(lf_path, "w") as f:
+                f.write("")
+
+        subprocess.Popen(["notepad", lf_path])
+
     def check_module_event(self, event):
         if isinstance(self.editwin, outwin.OutputWindow):
             self.editwin.text.bell()
