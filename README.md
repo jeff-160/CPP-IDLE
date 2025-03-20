@@ -2,7 +2,9 @@
 
 ## Introduction
 
-This project contains modified IDLE source code that removes all Python functionality and converts it into a C++ IDE.
+This project contains modified IDLE source code that removes all Python functionality and converts it into a C++ IDE.  
+
+This is NOT an extension, this is a straight up IDE hack.
 
 ## Requirements
 
